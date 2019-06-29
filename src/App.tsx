@@ -22,13 +22,11 @@ const App: React.FC = () => {
   }
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`onChangeInput`, { event })
     const text = event.target.value
     setInput(text)
   }
 
   const onKeyDownInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(`onKeyDownInput`, { event })
     switch (event.key) {
       case 'Enter': {
         addMessge(input)
