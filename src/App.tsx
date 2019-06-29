@@ -1,5 +1,12 @@
 import React from 'react'
 import './App.css'
+import { DirectLine } from 'botframework-directlinejs';
+
+const directLine = new DirectLine({
+  secret: 'secret',
+  domain: `//localhost:3978`,
+  webSocket: false,
+})
 
 interface IMessage {
   value: string
@@ -19,6 +26,18 @@ const App: React.FC = () => {
     })
     // Clear input
     setInput('')
+
+    directLine.postActivity({
+      from: {
+        id: 'myUserId',
+        name: 'myUserName'
+      },
+      type: 'message',
+      text: m
+    }).subscribe(
+      id => console.log("Posted activity, assigned ID ", id),
+      error => console.log("Error posting activity", error)
+    )
   }
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +60,6 @@ const App: React.FC = () => {
       </header>
       <div className="chat">
         <div className="chat-messages">
-
           {messages.map((m, i) =>
             <div key={i} className="chat-message">
               Message: {m.value}
