@@ -1,56 +1,34 @@
 import React from 'react'
 import './App.css'
-
-interface IMessage {
-  value: string
-}
+import WebChat, { createDirectLine } from 'botframework-webchat'
 
 const App: React.FC = () => {
-  const [input, setInput] = React.useState('')
-  const [messages, setMessages] = React.useState<IMessage[]>([])
-  const addMessge = (m: string) => {
-    const newMessage: IMessage = {
-      value: m
+  const [token, setToken] = React.useState()
+  React.useEffect(() => {
+    async function getToken() {
+      const res = await fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' });
+      const { token } = await res.json()
+      setToken(token)
     }
-    // Add message
-    setMessages(msgs => {
-      msgs.push(newMessage)
-      return msgs
-    })
-    // Clear input
-    setInput('')
-  }
 
-  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const text = event.target.value
-    setInput(text)
-  }
-
-  const onKeyDownInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    switch (event.key) {
-      case 'Enter': {
-        addMessge(input)
-      }
-    }
-  }
+    getToken()
+  }, [])
 
   return (
     <div className="app">
       <header className="app-header">
         <h2>SC2IQ Bot Client</h2>
       </header>
-      <div className="chat">
-        <div className="chat-messages">
-          {messages.map((m, i) =>
-            <div key={i} className="chat-message">
-              Message: {m.value}
-            </div>
-          )}
-        </div>
-        <div className="chat-input">
-          <input type="text" value={input} placeholder="Type your message..." onChange={onChangeInput} onKeyDown={onKeyDownInput} />
-        </div>
-      </div>
+
+      {!token
+        ? <div>Getting token...</div>
+        : <WebChat
+          directLine={createDirectLine({
+            token,
+            websocket: false,
+          })}
+          storeKey="webchat"
+        />}
     </div>
   );
 }
