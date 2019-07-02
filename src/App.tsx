@@ -2,6 +2,11 @@ import React from 'react'
 import './App.css'
 import WebChat, { createDirectLine } from 'botframework-webchat'
 
+const styleOptions = {
+  botAvatarImage: 'https://docs.microsoft.com/en-us/azure/bot-service/v4sdk/media/logo_bot.svg?view=azure-bot-service-4.0',
+  userAvatarImage: 'https://github.com/compulim.png?size=64',
+};
+
 const App: React.FC = () => {
   const [token, setToken] = React.useState()
   React.useEffect(() => {
@@ -27,6 +32,7 @@ const App: React.FC = () => {
             token,
             websocket: false,
           })}
+          styleOptions={styleOptions}
           storeKey="webchat"
         />}
     </div>
