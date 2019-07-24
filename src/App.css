@@ -8,3 +8,7 @@
   border-bottom: 1px solid black;
   margin-bottom: 1em;
 }
+
+#custom-webchat {
+  border: 1px solid black;
+}
