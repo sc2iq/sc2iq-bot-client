@@ -155,7 +155,7 @@ const App: React.FC = () => {
 <WebChat
   directLine={createDirectLine({
     secret: 'secret',
-    domain: 'http://localhost:3978/directline',
+    domain: `http://localhost:${process.env.REACT_APP_BOT_PORT!}/directline`,
     webSocket: false,
   })}
   styleOptions={styleOptions}
